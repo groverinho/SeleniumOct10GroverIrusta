@@ -29,20 +29,20 @@ public class Main {
         driver.get(baseURL);
     }
 
-    public void login() {
+    public void login(String userName, String password) {
         PageUtil.subLog("Fill userName");
         WebElement element = PageUtil.getElement(driver, By.name("user-name"));
         boolean isDisplayed = element != null && element.isDisplayed();
         PageUtil.subLog("Is userName displayed ? " + isDisplayed);
         Assert.assertTrue(isDisplayed, "UserName field is not displayed");
-        element.sendKeys("standard_user");
+        element.sendKeys(userName);
 
         PageUtil.subLog("Fill password");
         element = PageUtil.getElement(driver, By.name("password"));
         isDisplayed = element != null && element.isDisplayed();
         PageUtil.subLog("Is password displayed ? " + isDisplayed);
         Assert.assertTrue(isDisplayed, "Password field is not displayed");
-        element.sendKeys("secret_sauce");
+        element.sendKeys(password);
 
         PageUtil.subLog("Click on Login");
         element = PageUtil.getElement(driver, By.name("login-button"));
@@ -50,6 +50,7 @@ public class Main {
         PageUtil.subLog("Is Login button displayed ? " + isDisplayed);
         Assert.assertTrue(isDisplayed, "Login button is not displayed");
         element.click();
+        PageUtil.subLog("Logging with user"+ userName+"/"+password);
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html", "Inventory page is not loaded");
     }
 
@@ -151,10 +152,10 @@ public class Main {
 
 
 
-    @Test
-    public void test1() throws InterruptedException {
+    @Test(dataProvider = "loginData", dataProviderClass = DataProviderClass.class)
+    public void test1(String userName, String password) throws InterruptedException {
         System.out.println("1. Login to saucedemo");
-        login();
+        login(userName, password);
 
         System.out.println("2. Select any product");
         selectProduct();
