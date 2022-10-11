@@ -11,6 +11,8 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import utils.PageUtil;
 
+import java.util.List;
+
 public class Main {
 
     private WebDriver driver;
@@ -52,11 +54,37 @@ public class Main {
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html","Inventory page is not loaded");
     }
 
+    public void selectProduct(){
+        WebElement element = PageUtil.getElement(driver, By.xpath("(//div[@class='inventory_item_name'])[1]"));
+        Assert.assertTrue(element !=null && element.isDisplayed(),"No products displayed");
+        String product =         element.getText();
+        System.out.println("'"+product + "' selected");
+
+        element = PageUtil.getElement(driver, By.xpath("(//button[text()='Add to cart'])[1]"));
+        Assert.assertTrue(element !=null && element.isDisplayed(),"'ADD TO CART' button is not displayed");
+        System.out.println("Click on 'ADD TO CART' button");
+        element.click();
+
+        System.out.println("Check if remove button is displayed");
+        element = PageUtil.getElement(driver, By.xpath("//button[@id='remove-sauce-labs-backpack']"));
+        boolean isDisplayed = element !=null && element.isDisplayed();
+        System.out.println("Is Remove Button displayed ? " +isDisplayed );
+        Assert.assertTrue(isDisplayed,"'ADD TO CART' button is not displayed");
+
+        System.out.println("Check if increase +1 in the shopping cart icon");
+        element = PageUtil.getElement(driver, By.xpath("//span[@class='shopping_cart_badge']"));
+        isDisplayed = element !=null && element.isDisplayed() && element.getText().equals("1");
+        System.out.println("Is Remove Button displayed ? " +isDisplayed );
+        Assert.assertTrue(isDisplayed,"'ADD TO CART' button is not displayed");
+    }
+
     @Test
     public void test1() throws InterruptedException {
         System.out.println("1. Login to saucedemo");
         login();
 
+        System.out.println("2. Select any product");
+        selectProduct();
     }
 
     @AfterMethod
