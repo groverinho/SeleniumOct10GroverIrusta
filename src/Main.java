@@ -73,7 +73,7 @@ public class Main {
         PageUtil.subLog("Check if increase +1 in the shopping cart icon");
         element = PageUtil.getElement(driver, By.xpath("//span[@class='shopping_cart_badge']"));
         isDisplayed = element != null && element.isDisplayed() && element.getText().equals("1");
-        PageUtil.subLog("Is shopping card icon displayed ? " + isDisplayed);
+        PageUtil.subLog("Is shopping card icon displayed and increased +1 ? " + isDisplayed);
         Assert.assertTrue(isDisplayed, "Shopping card icon is not displayed");
 
         return product;
@@ -91,7 +91,7 @@ public class Main {
         PageUtil.subLog("Is 'Add to cart' Button displayed ? " + isDisplayed);
         Assert.assertTrue(isDisplayed, "'Add to cart' Button is not displayed");
 
-        PageUtil.subLog("Check if increase +1 in the shopping cart icon");
+        PageUtil.subLog("Check if increase -1 in the shopping cart icon");
         element = PageUtil.getElement(driver, By.xpath("//span[@class='shopping_cart_badge']"));
         isDisplayed = element != null && element.isDisplayed();
         PageUtil.subLog("Is shopping card icon displayed -1 ? " + !isDisplayed);
@@ -101,15 +101,16 @@ public class Main {
     public void goToYourCardPage(String product) {
         PageUtil.subLog("Click on cart icon");
         WebElement element = PageUtil.getElement(driver, By.xpath("//div[@id='shopping_cart_container']"));
-        PageUtil.subLog("Is cart icon available");
+        boolean isDisplayed = element != null && element.isDisplayed();
+        PageUtil.subLog("Is cart icon available ? "+ isDisplayed);
         Assert.assertTrue(element != null && element.isDisplayed(), "Card icon is not available");
         element.click();
 
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/cart.html", "Inventory page is not loaded");
 
-        PageUtil.subLog("Verify if "+product+" product is displayed ? ");
+        PageUtil.subLog("Verify if "+product+" product is displayed");
         element = PageUtil.getElement(driver, By.xpath("//div[text()='"+product+"']"));
-        boolean isDisplayed = element != null && element.isDisplayed();
+         isDisplayed = element != null && element.isDisplayed();
         PageUtil.subLog("Is '"+product+ "' product displayed ? "+ isDisplayed);
         Assert.assertTrue(isDisplayed, "'"+product + "' product is not available");
     }
@@ -120,7 +121,7 @@ public class Main {
         Assert.assertTrue(element != null && element.isDisplayed(), "Remove Button is not displayed");
         element.click();
 
-        PageUtil.subLog("Verify if "+product+" product was removed ? ");
+        PageUtil.subLog("Verify if "+product+" product was removed");
         element = PageUtil.getElement(driver, By.xpath("//div[text()='"+product+"']"));
         boolean isDisplayed = element != null && element.isDisplayed();
         PageUtil.subLog("Was '"+product+ "' product removed ? "+ !isDisplayed);
@@ -170,7 +171,7 @@ public class Main {
         System.out.println("6. Remove the product");
         removeProduct2(product);
 
-        System.out.println("5. Check product removed in the inventory page");
+        System.out.println("7. Check product removed in the inventory page");
         goToInventoryPage();
         verifyProductRemoved();
 
