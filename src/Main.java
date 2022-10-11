@@ -53,7 +53,7 @@ public class Main {
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html", "Inventory page is not loaded");
     }
 
-    public void selectProduct() {
+    public String selectProduct() {
         WebElement element = PageUtil.getElement(driver, By.xpath("(//div[@class='inventory_item_name'])[1]"));
         Assert.assertTrue(element != null && element.isDisplayed(), "No products displayed");
         String product = element.getText();
@@ -75,6 +75,8 @@ public class Main {
         isDisplayed = element != null && element.isDisplayed() && element.getText().equals("1");
         PageUtil.subLog("Is shopping card icon displayed ? " + isDisplayed);
         Assert.assertTrue(isDisplayed, "Shopping card icon is not displayed");
+
+        return product;
     }
 
     public void removeProduct() {
@@ -96,6 +98,22 @@ public class Main {
         Assert.assertFalse(isDisplayed, "Shopping card icon is still displaying a value");
     }
 
+    public void goToYourCardPage(String product) {
+        PageUtil.subLog("Click on cart icon");
+        WebElement element = PageUtil.getElement(driver, By.xpath("//div[@id='shopping_cart_container']"));
+        PageUtil.subLog("Is cart icon available");
+        Assert.assertTrue(element != null && element.isDisplayed(), "Card icon is not available");
+        element.click();
+
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/cart.html", "Inventory page is not loaded");
+
+        PageUtil.subLog("Verify if "+product+" product is displayed ? ");
+        element = PageUtil.getElement(driver, By.xpath("//div[text()='"+product+"']"));
+        boolean isDisplayed = element != null && element.isDisplayed();
+        PageUtil.subLog("Is '"+product+ "' product displayed ? "+ isDisplayed);
+        Assert.assertTrue(isDisplayed, "'"+product + "' product is not available");
+    }
+
 
     @Test
     public void test1() throws InterruptedException {
@@ -109,9 +127,11 @@ public class Main {
         removeProduct();
 
         System.out.println("4. Select again the product");
-        selectProduct();
+        String product = selectProduct();
 
         System.out.println("5. Go to 'Your Card' Page");
+        goToYourCardPage(product);
+
 
     }
 
