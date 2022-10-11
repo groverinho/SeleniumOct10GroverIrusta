@@ -123,7 +123,7 @@ public class Main {
         PageUtil.subLog("Verify if "+product+" product was removed ? ");
         element = PageUtil.getElement(driver, By.xpath("//div[text()='"+product+"']"));
         boolean isDisplayed = element != null && element.isDisplayed();
-        PageUtil.subLog("Was '"+product+ "' product removed ? "+ isDisplayed);
+        PageUtil.subLog("Was '"+product+ "' product removed ? "+ !isDisplayed);
         Assert.assertFalse(isDisplayed, "'"+product + "' product is still displaying");
     }
 
@@ -144,7 +144,7 @@ public class Main {
         WebElement element = PageUtil.getElement(driver, By.xpath("//button[@id='remove-sauce-labs-backpack']"));
         boolean isDisplayed = element != null && element.isDisplayed();
 
-        PageUtil.subLog("Is the product removed on the inventory page ? " + isDisplayed);
+        PageUtil.subLog("Is the product removed on the inventory page ? " + !isDisplayed);
         Assert.assertFalse(isDisplayed, "Product is still displaying on the inventory page");
     }
 
