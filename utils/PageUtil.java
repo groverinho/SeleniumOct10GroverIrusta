@@ -45,4 +45,8 @@ public class PageUtil {
     public void wait(int seconds) throws InterruptedException {
         Thread.sleep(seconds * 1000);
     }
+
+    public static void subLog(String text) {
+        System.out.println("\t"+text);
+    }
 }
